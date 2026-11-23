@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Requested only at the moment of use with a friendly glass explanation card -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+    <uses-permission android:name="com.android.vending.BILLING" />
+
+    <!-- Network permissions for Open-Meteo Weather & Geocoding (with full offline cache) -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+    <uses-feature android:name="android.hardware.camera.flash" android:required="false" />
+    <uses-feature android:name="android.hardware.sensor.accelerometer" android:required="false" />
+    <uses-feature android:name="android.hardware.sensor.gyroscope" android:required="false" />
+    <uses-feature android:name="android.hardware.sensor.compass" android:required="false" />
+    <uses-feature android:name="android.hardware.sensor.light" android:required="false" />
+    <uses-feature android:name="android.hardware.sensor.proximity" android:required="false" />
+    <uses-feature android:name="android.hardware.sensor.barometer" android:required="false" />
+    <uses-feature android:name="android.hardware.sensor.stepcounter" android:required="false" />
+    <uses-feature android:name="android.hardware.sensor.stepdetector" android:required="false" />
+    <uses-feature android:name="android.hardware.microphone" android:required="false" />
+    <uses-feature android:name="android.hardware.location" android:required="false" />
+    <uses-feature android:name="android.hardware.location.gps" android:required="false" />
+    <uses-feature android:name="android.hardware.audio.output" android:required="false" />
+    <uses-feature android:name="android.hardware.touchscreen.multitouch" android:required="false" />
+    <uses-feature android:name="android.hardware.fingerprint" android:required="false" />
+    <uses-feature android:name="android.hardware.biometrics" android:required="false" />
+
+    <application
+        android:name=".DyneApplication"
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="Dyne"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Dyne">
+
+        <meta-data
+            android:name="com.google.mlkit.vision.DEPENDENCIES"
+            android:value="barcode,ocr" />
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-3940256099942544~3347511713" />
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:label="Dyne"
+            android:theme="@style/Theme.Dyne.Splash">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <service
+            android:name=".service.FlashlightTileService"
+            android:exported="true"
+            android:icon="@drawable/ic_qs_flashlight"
+            android:label="Dyne Torch"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            android:exported="false"
+            tools:node="merge">
+            <meta-data
+                android:name="androidx.work.WorkManagerInitializer"
+                android:value="androidx.startup"
+                tools:node="remove" />
+        </provider>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <receiver
+            android:name=".service.DyneNotificationReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+                <action android:name="com.example.action.USER_TIMER_ALARM" />
+                <action android:name="com.example.action.NOTIFICATION_SNOOZE" />
+                <action android:name="com.example.action.NOTIFICATION_DONE" />
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name=".widget.DyneWidgetConfigActivity"
+            android:exported="true"
+            android:label="Configure Dyne Widget"
+            android:theme="@style/Theme.Dyne">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
+
+        <receiver
+            android:name=".widget.DyneTorchWidgetActionReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.example.widget.ACTION_TOGGLE_TORCH_WIDGET" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".widget.QuickTileGlanceWidgetReceiver"
+            android:exported="true"
+            android:label="Dyne • Quick Tile (1×1)">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_quick_tile_info" />
+        </receiver>
+
+        <receiver
+            android:name=".widget.FeatureGrid2x2GlanceWidgetReceiver"
+            android:exported="true"
+            android:label="Dyne • Feature Grid (2×2)">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_feature_grid_2x2_info" />
+        </receiver>
+
+        <receiver
+            android:name=".widget.FeatureGrid4x1GlanceWidgetReceiver"
+            android:exported="true"
+            android:label="Dyne • Feature Grid (4×1)">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_feature_grid_4x1_info" />
+        </receiver>
+
+        <receiver
+            android:name=".widget.FeatureGrid4x2GlanceWidgetReceiver"
+            android:exported="true"
+            android:label="Dyne • Feature Grid (4×2)">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_feature_grid_4x2_info" />
+        </receiver>
+
+        <receiver
+            android:name=".widget.Torch1x1GlanceWidgetReceiver"
+            android:exported="true"
+            android:label="Dyne • Torch (1×1)">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_torch_1x1_info" />
+        </receiver>
+
+        <receiver
+            android:name=".widget.FlashlightGlanceWidgetReceiver"
+            android:exported="true"
+            android:label="Dyne • Torch (2×1)">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_flashlight_info" />
+        </receiver>
+
+        <receiver
+            android:name=".widget.SolunarGlanceWidgetReceiver"
+            android:exported="true"
+            android:label="Dyne • Solunar (2×2)">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_solunar_info" />
+        </receiver>
+
+        <receiver
+            android:name=".widget.WeatherGlanceWidgetReceiver"
+            android:exported="true"
+            android:label="Dyne • Weather (2×2)">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_weather_info" />
+        </receiver>
+
+        <receiver
+            android:name=".widget.QuickScanGlanceWidgetReceiver"
+            android:exported="true"
+            android:label="Dyne • Scan (2×1)">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_quick_scan_info" />
+        </receiver>
+
+        <receiver
+            android:name=".widget.SkyGlanceWidgetReceiver"
+            android:exported="true"
+            android:label="Dyne • Sky (2×2)">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_sky_info" />
+        </receiver>
+
+        <receiver
+            android:name=".widget.CompassGlanceWidgetReceiver"
+            android:exported="true"
+            android:label="Dyne • Compass (2×1)">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_compass_info" />
+        </receiver>
+    </application>
+
+</manifest>

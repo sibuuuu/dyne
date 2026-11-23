@@ -1,0 +1,16 @@
+# Dyne Baseline Profile for Startup, Home LazyColumn, and Feature Navigation
+HSPLcom/example/DyneApplication;-><init>()V
+HSPLcom/example/DyneApplication;->onCreate()V
+HSPLcom/example/MainActivity;-><init>()V
+HSPLcom/example/MainActivity;->onCreate(Landroid/os/Bundle;)V
+HSPLcom/example/SplashKt;->DyneLogo(FLandroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+HSPLcom/example/SplashKt;->DyneLogoBadge(FLandroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+HSPLcom/example/ui/theme/DesignTokens;-><clinit>()V
+HSPLcom/example/ui/theme/ThemeKt;->DyneTheme(Lcom/example/data/UserPreferences;ZLkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+HSPLcom/example/ui/home/HomeScreenKt;->HomeScreen(ZLcom/example/data/UserPreferences;Lcom/example/ui/sunmoon/SunMoonUiState;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Ljava/lang/String;IILkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lcom/example/ui/solunar/SolunarUiState;Lcom/example/ui/components/HazeState;Landroidx/compose/ui/input/nestedscroll/NestedScrollConnection;ZLjava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lcom/example/billing/FeatureGate;Lcom/example/ui/settings/SettingsViewModel;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;IIII)V
+HSPLcom/example/domain/FeatureRegistry;-><clinit>()V
+HSPLcom/example/domain/FeatureRegistry;->getFeatureById(Ljava/lang/String;)Lcom/example/domain/Feature;
+HSPLcom/example/domain/FeatureRegistry;->searchFeatures(Ljava/lang/String;Lcom/example/data/DeviceCapabilities;Z)Ljava/util/List;
+HSPLcom/example/billing/AccessManager;->hasAccess(Ljava/lang/String;ZLjava/util/Map;JJ)Z
+HSPLcom/example/ui/components/LiquidGlassKt;->GlassCard(Landroidx/compose/ui/Modifier;Lcom/example/ui/components/HazeState;FLandroidx/compose/ui/graphics/Color;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+HSPLcom/example/ui/components/LiquidGlassKt;->GlassIconButton(Landroidx/compose/ui/graphics/vector/ImageVector;Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Lcom/example/ui/components/HazeState;Landroidx/compose/ui/graphics/Color;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
